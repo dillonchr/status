@@ -1,11 +1,8 @@
 #!/bin/bash
-
 right_align () {
-    domain=$1
-    size=${#domain}
-    len=$(($(tput cols) - $size))
-    printf "%s%*s" $1 $len $2
+    printf "%s%*s" $1 $(($(tput cols) - ${#1})) $2
 }
+export -f right_align
 
 get_status () {
     curl -is https://$1 | grep -Eq "200 OK|401 Unauthorized"
@@ -15,7 +12,6 @@ get_status () {
         right_align $1 "ok"
     fi
 }
-get_status fromgildywith.love
-get_status funhouse.dillonchristensen.com
-get_status bookworth.net
+export -f get_status
 
+cat domains | xargs -n1 -P2 bash -c 'get_status "$@"' _

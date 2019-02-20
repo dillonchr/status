@@ -8,7 +8,7 @@ right_align () {
 }
 
 get_status () {
-    curl -is https://$1 | grep -q "200 OK\|401 Unauthorized"
+    curl -is https://$1 | grep -Eq "200 OK|401 Unauthorized"
     if [ "$?" -ne "0" ]; then
         right_align $1 "DOWN"
     else

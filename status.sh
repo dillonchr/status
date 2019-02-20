@@ -1,16 +1,12 @@
 #!/bin/bash
-right_align () {
-    printf "%s%*s" $1 $(($(tput cols) - ${#1})) $2
-}
-export -f right_align
-
 get_status () {
     curl -is https://$1 | grep -Eq "200 OK|401 Unauthorized"
     if [ "$?" -ne "0" ]; then
-        right_align $1 "DOWN"
+        status="$(tput setaf 1)DOWN$(tput sgr0)"
     else
-        right_align $1 "ok"
+        status="$(tput setaf 2)ok$(tput sgr0)"
     fi
+    printf "%s%*s\n" $1 $(($(tput cols) - ${#1})) $status
 }
 export -f get_status
 
